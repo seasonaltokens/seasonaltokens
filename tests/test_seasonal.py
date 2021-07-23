@@ -313,11 +313,11 @@ def test_transferFrom(token_with_allowance, accounts):
 
 def test_revert_transferFrom_zero_address(token_with_allowance):
     with reverts():
-        token_with_allowance.transferFrom(accounts[-1], ZERO_ADDRESS, 11, {'from': accounts[0]})
+        token_with_allowance.transferFrom(accounts[-1], ZERO_ADDRESS, 10, {'from': accounts[0]})
 
 def test_revert_transferFrom_contract_address(token_with_allowance, accounts):
     with reverts():
-        token_with_allowance.transferFrom(accounts[-1], token_with_allowance.address, 11, 
+        token_with_allowance.transferFrom(accounts[-1], token_with_allowance.address, 10, 
                                           {'from': accounts[0]})
 
 def test_revert_insufficient_allowance(token_with_allowance, accounts):
