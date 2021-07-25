@@ -1,0 +1,48 @@
+13c13
+< // 'Spring Token' contract
+---
+> // 'Autumn Token' contract
+17c17
+< // Symbol      : SPRING
+---
+> // Symbol      : AUTUMN
+19c19
+< // Name        : Spring Token
+---
+> // Name        : Autumn Token
+25c25
+< // Initial mining reward: 168
+---
+> // Initial mining reward: 120
+27c27
+< // Fraction of total supply released before first halving: 1/5
+---
+> // Fraction of total supply released before first halving: 3/7
+35c35
+< contract SpringToken is ERC20Interface, ERC918, Owned {
+---
+> contract AutumnToken is ERC20Interface, ERC918, Owned {
+37c37
+<     string public constant symbol = "SPRING";
+---
+>     string public constant symbol = "AUTUMN";
+39c39
+<     string public constant name = "Spring Token";
+---
+>     string public constant name = "Autumn Token";
+41c41
+<     uint public constant TOKEN_IDENTIFIER = 1;
+---
+>     uint public constant TOKEN_IDENTIFIER = 3;
+47c47
+<     uint public constant INITIAL_REWARD = 168 * 10**18;
+---
+>     uint public constant INITIAL_REWARD = 120 * 10**18;
+53c53
+<     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 4; // 9 months
+---
+>     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 9) / 4; // 27 months
+121c121
+< 
+---
+>         

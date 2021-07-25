@@ -1,0 +1,117 @@
+10a11
+> 
+13c14
+< // 'Spring Token' contract
+---
+> // Test Spring Token contract - same as Spring Token except:
+15c16
+< // ERC20 & ERC918 Mineable Token using Proof Of Work
+---
+> //
+17c18
+< // Symbol      : SPRING
+---
+> // Added setters for variables and a new variable to record allowance notifications
+19c20
+< // Name        : Spring Token
+---
+> //
+21c22
+< // Total supply: 33,112,800.00
+---
+> // Most internal functions have been made public to allow testing
+23c24
+< // Decimals    : 18
+---
+> //
+25c26
+< // Initial mining reward: 168
+---
+> // contractCreationTime not declared immutable
+27c28
+< // Fraction of total supply released before first halving: 1/5
+---
+> //
+29c30,32
+< // ----------------------------------------------------------------------------
+---
+> // Increased MINIMUM_TARGET to test upper limit of difficulty
+> 
+> //
+30a34,36
+> // Allowed transfers to the contract address to test the ability to rescue those funds
+> 
+> // ----------------------------------------------------------------------------
+33a40
+> contract TestSpringToken is ERC20Interface, ERC918, Owned {
+35c42
+< contract SpringToken is ERC20Interface, ERC918, Owned {
+---
+>     uint public notifiedAllowance;
+57c64
+<     uint public constant MINIMUM_TARGET = 2**16;
+---
+>     uint public constant MINIMUM_TARGET = (2**uint(233) * 9) / 13; // was 2**16
+61c68
+<     uint public immutable contractCreationTime;
+---
+>     uint public contractCreationTime;
+96d102
+< 
+140c146
+<                                        uint currentTime) internal pure returns (uint) {
+---
+>                                        uint currentTime) public pure returns (uint) {
+156c162
+<                                     uint currentTime) internal pure returns (uint) {
+---
+>                                     uint currentTime) public pure returns (uint) {
+176c182
+<                                        uint _previousMaxNumberOfRewards) internal {
+---
+>                                         uint _previousMaxNumberOfRewards) internal {
+209,210c215
+< 
+<     function _scheduledNumberOfRewards(uint currentTime) internal view returns (uint) {
+---
+>     function _scheduledNumberOfRewards(uint currentTime) public view returns (uint) {
+217c222
+<                                uint currentTime) internal pure returns (uint){
+---
+>                                uint currentTime) public pure returns (uint){
+238d242
+< 
+272c276
+<     function _getMiningReward(uint _time) internal view returns (uint) {
+---
+>     function _getMiningReward(uint _time) public view returns (uint) {
+330c334
+<         require(to != address(0) && to != address(this));
+---
+>         require(to != address(0)); // was require(to != address(0) && to != address(this));
+497a502,526
+> 
+> 
+>     // functions for unit testing    
+> 
+>     function setMaxNumberOfRewards(uint _maxNumberOfRewards) public {
+>         maxNumberOfRewardsPerMint = _maxNumberOfRewards;
+>     }
+> 
+>     function setMiningTarget(uint _miningTarget) public {
+>         miningTarget = _miningTarget;
+>     }
+> 
+>     function setChallengeNumber(bytes32 _challengeNumber) public {
+>         challengeNumber = _challengeNumber;
+>     }
+> 
+>     function setBalance(address _address, uint balance) public {
+>         balances[_address] = balance;
+>     }
+> 
+>     function receiveApproval(address from, uint256 tokens, address token, bytes memory data) public {
+>         notifiedAllowance = tokens;
+>         from; tokens; token; data;  // suppress compiler warnings about unused variables
+>     }
+> 
