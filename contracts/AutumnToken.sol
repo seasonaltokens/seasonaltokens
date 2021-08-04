@@ -70,17 +70,12 @@ contract AutumnToken is ERC20Interface, ERC918, Owned {
 
     uint public tokensMinted;
 
-    bool internal locked = false;
-
     mapping(address => uint) internal balances;
 
     mapping(address => mapping(address => uint)) internal allowed;
 
 
-    constructor() onlyOwner {
-        
-        if (locked) revert();
-        locked = true;
+    constructor() {
 
         miningTarget = MAXIMUM_TARGET / 2**10;
 
@@ -291,13 +286,9 @@ contract AutumnToken is ERC20Interface, ERC918, Owned {
         return DECIMALS;
     }
 
-    function totalSupply() public pure override returns (uint) {
+    function totalSupply() public view override returns (uint) {
 
-        // this is an estimate of the final total supply. the actual number of tokens
-        // minted in any era will depend on how the hashrate changes and may differ
-        // slightly from the scheduled quantity
-
-        return TOTAL_SUPPLY;
+        return tokensMinted;
     }
 
 

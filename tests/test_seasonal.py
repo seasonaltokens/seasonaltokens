@@ -28,7 +28,9 @@ def token(accounts, chain):
 
 
 def test_total_supply(token):
-    assert token.totalSupply() == 33112800 * 10**18
+    assert token.totalSupply() == token.tokensMinted()
+    token.mint(nonce)
+    assert token.totalSupply() == token.tokensMinted()
 
 def test_initial_reward(token):
     assert token.INITIAL_REWARD() == 168 * 10**18
