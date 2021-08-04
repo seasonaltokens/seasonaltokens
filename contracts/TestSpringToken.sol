@@ -71,9 +71,9 @@ contract TestSpringToken is ERC20Interface, ERC918, Owned {
 
     uint public maxNumberOfRewardsPerMint;
 
-    bytes32 public challengeNumber;
+    bytes32 private challengeNumber;
         
-    uint public miningTarget;
+    uint private miningTarget;
 
     uint public tokensMinted;
 
