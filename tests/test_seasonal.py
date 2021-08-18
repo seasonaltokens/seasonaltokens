@@ -361,6 +361,10 @@ def test_approve_and_call_fallback(token_with_allowance):
     token_with_allowance.approveAndCall(token_with_allowance.address, 10, 1)
     assert token_with_allowance.notifiedAllowance() == 10
 
+def test_approve_and_call_fallback_revert_zero_address(token_with_allowance):
+    with reverts("Invalid address"):
+        token_with_allowance.approveAndCall(ZERO_ADDRESS, 10, 1)
+
 def test_safe_approve_and_call_fallback(token_with_allowance):
     assert token_with_allowance.notifiedAllowance() == 0
     token_with_allowance.safeApproveAndCall(token_with_allowance.address, 0, 10, 1)

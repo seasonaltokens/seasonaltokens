@@ -23,26 +23,22 @@
 ---
 > contract WinterToken is ERC20Interface, ERC918, Owned {
 37c37
-<     string public constant symbol = "SPRING";
+<     string private constant SYMBOL = "SPRING";
 ---
->     string public constant symbol = "WINTER";
+>     string private constant SYMBOL = "WINTER";
 39c39
-<     string public constant name = "Spring Token";
+<     string private constant NAME = "Spring Token";
 ---
->     string public constant name = "Winter Token";
+>     string private constant NAME = "Winter Token";
 41c41
-<     uint public constant TOKEN_IDENTIFIER = 1;
+<     uint256 public constant TOKEN_IDENTIFIER = 1;
 ---
->     uint public constant TOKEN_IDENTIFIER = 4;
+>     uint256 public constant TOKEN_IDENTIFIER = 4;
 47c47
-<     uint public constant INITIAL_REWARD = 168 * 10**18;
+<     uint256 public constant INITIAL_REWARD = 168 * 10**18;
 ---
->     uint public constant INITIAL_REWARD = 105 * 10**18;
+>     uint256 public constant INITIAL_REWARD = 105 * 10**18;
 53c53
-<     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 4; // 9 months
+<     uint256 public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 4; // 9 months
 ---
->     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3); // 36 months
-121c121
-< 
----
->         
+>     uint256 public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3); // 36 months

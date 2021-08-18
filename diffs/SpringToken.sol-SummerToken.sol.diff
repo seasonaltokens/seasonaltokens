@@ -23,26 +23,22 @@
 ---
 > contract SummerToken is ERC20Interface, ERC918, Owned {
 37c37
-<     string public constant symbol = "SPRING";
+<     string private constant SYMBOL = "SPRING";
 ---
->     string public constant symbol = "SUMMER";
+>     string private constant SYMBOL = "SUMMER";
 39c39
-<     string public constant name = "Spring Token";
+<     string private constant NAME = "Spring Token";
 ---
->     string public constant name = "Summer Token";
+>     string private constant NAME = "Summer Token";
 41c41
-<     uint public constant TOKEN_IDENTIFIER = 1;
+<     uint256 public constant TOKEN_IDENTIFIER = 1;
 ---
->     uint public constant TOKEN_IDENTIFIER = 2;
+>     uint256 public constant TOKEN_IDENTIFIER = 2;
 47c47
-<     uint public constant INITIAL_REWARD = 168 * 10**18;
+<     uint256 public constant INITIAL_REWARD = 168 * 10**18;
 ---
->     uint public constant INITIAL_REWARD = 140 * 10**18;
+>     uint256 public constant INITIAL_REWARD = 140 * 10**18;
 53c53
-<     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 4; // 9 months
+<     uint256 public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 4; // 9 months
 ---
->     uint public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 2; // 18 months
-121c121
-< 
----
->         
+>     uint256 public constant DURATION_OF_FIRST_ERA = (365 * 24 * 60 * 60 * 3) / 2; // 18 months

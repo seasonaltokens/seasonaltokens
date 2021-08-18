@@ -257,9 +257,9 @@ contract SpringToken is ERC20Interface, ERC918, Owned {
     }
 
     function getMiningDifficulty() public view override returns (uint256) {
-        // 64 f's:          1234567890123456789012345678901234567890123456789012345678901234
-        uint256 MAX_INT = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
-        return MAX_INT / miningTarget;
+        // 64 f's:         1234567890123456789012345678901234567890123456789012345678901234
+        uint256 maxInt = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+        return maxInt / miningTarget;
     }
 
     function getMiningTarget() public view override returns (uint256) {
@@ -440,26 +440,21 @@ contract SpringToken is ERC20Interface, ERC918, Owned {
     }
 
 
-
     // ------------------------------------------------------------------------
 
     // Token owner can approve for `spender` to transferFrom(...) `tokens`
 
     // from the token owner's account. The `spender` contract function
 
-    // `receiveApproval(...)` is then executed
+    // `receiveApproval(...)` is then executed. This is vulnerable to double-spend attacks
 
-    //
-
-    // Warning: This function is vulnerable to double-spend attacks and is
-
-    // included for backwards compatibility. Use safeApproveAndCall instead.
+    // when called directly, so it is declared internal and called by safeApproveAndCall
 
     // ------------------------------------------------------------------------
 
     function approveAndCall(address spender, uint256 tokens, bytes memory data) internal returns (bool success) {
         
-        require(spender != address(this), "Invalid address");
+        require(spender != address(0) && spender != address(this), "Invalid address");
 
         allowed[msg.sender][spender] = tokens;
 

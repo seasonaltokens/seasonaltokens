@@ -47,58 +47,76 @@
 35c42
 < contract SpringToken is ERC20Interface, ERC918, Owned {
 ---
->     uint public notifiedAllowance;
+>     uint256 public notifiedAllowance;
 57c64
-<     uint public constant MINIMUM_TARGET = 2**16;
+<     uint256 public constant MINIMUM_TARGET = 2**16;
 ---
->     uint public constant MINIMUM_TARGET = (2**uint(233) * 9) / 13; // was 2**16
+>     uint256 public constant MINIMUM_TARGET = (2**uint256(233) * 9) / 13; // was 2**16
 61c68
-<     uint public immutable contractCreationTime;
+<     uint256 public immutable contractCreationTime;
 ---
->     uint public contractCreationTime;
-96d102
-< 
-140c146
-<                                        uint currentTime) internal pure returns (uint) {
----
->                                        uint currentTime) public pure returns (uint) {
-156c162
-<                                     uint currentTime) internal pure returns (uint) {
----
->                                     uint currentTime) public pure returns (uint) {
-176c182
-<                                        uint _previousMaxNumberOfRewards) internal {
----
->                                         uint _previousMaxNumberOfRewards) internal {
-209,210c215
-< 
-<     function _scheduledNumberOfRewards(uint currentTime) internal view returns (uint) {
----
->     function _scheduledNumberOfRewards(uint currentTime) public view returns (uint) {
-217c222
-<                                uint currentTime) internal pure returns (uint){
----
->                                uint currentTime) public pure returns (uint){
-238d242
-< 
-272c276
-<     function _getMiningReward(uint _time) internal view returns (uint) {
----
->     function _getMiningReward(uint _time) public view returns (uint) {
-330c334
-<         require(to != address(0) && to != address(this));
----
->         require(to != address(0)); // was require(to != address(0) && to != address(this));
-497a502,526
+>     uint256 public contractCreationTime;
+77a85
 > 
+142c150
+<                                        uint256 currentTime) internal pure returns (uint256) {
+---
+>                                        uint256 currentTime) public pure returns (uint256) {
+158c166
+<                                     uint256 currentTime) internal pure returns (uint256) {
+---
+>                                     uint256 currentTime) public pure returns (uint256) {
+169c177
+<     function _giveRewards(uint256 totalReward) internal returns (uint256) {
+---
+>     function _giveRewards(uint256 totalReward) public returns (uint256) {
+178c186
+<                                         uint256 _previousMaxNumberOfRewards) internal {
+---
+>                                         uint256 _previousMaxNumberOfRewards) public {
+199c207
+<     function _getNewChallengeNumber(uint256 _tokensMinted) internal view returns (bytes32) {
+---
+>     function _getNewChallengeNumber(uint256 _tokensMinted) public view returns (bytes32) {
+212c220
+<     function _scheduledNumberOfRewards(uint256 currentTime) internal view returns (uint256) {
+---
+>     function _scheduledNumberOfRewards(uint256 currentTime) public view returns (uint256) {
+219c227
+<                                uint256 currentTime) internal pure returns (uint256){
+---
+>                                uint256 currentTime) public pure returns (uint256){
+276c284
+<     function _getMiningReward(uint256 _time) internal view returns (uint256) {
+---
+>     function _getMiningReward(uint256 _time) public view returns (uint256) {
+330c338,339
+<         require(to != address(0) && to != address(this), "Invalid address");
+---
+>         require(to != address(0), "Invalid address");
+>         // was require(to != address(0) && to != address(this), "Invalid address");
+455c464
+<     function approveAndCall(address spender, uint256 tokens, bytes memory data) internal returns (bool success) {
+---
+>     function approveAndCall(address spender, uint256 tokens, bytes memory data) public returns (bool success) {
+457c466,468
+<         require(spender != address(0) && spender != address(this), "Invalid address");
+---
+>         // was require(spender != address(0) && spender != address(this), "Invalid address");
+>         // approvals to the test contract are allowed for testing
+>         require(spender != address(0), "Invalid address");
+498c509,534
+< }
+\ No newline at end of file
+---
 > 
 >     // functions for unit testing    
 > 
->     function setMaxNumberOfRewards(uint _maxNumberOfRewards) public {
+>     function setMaxNumberOfRewards(uint256 _maxNumberOfRewards) public {
 >         maxNumberOfRewardsPerMint = _maxNumberOfRewards;
 >     }
 > 
->     function setMiningTarget(uint _miningTarget) public {
+>     function setMiningTarget(uint256 _miningTarget) public {
 >         miningTarget = _miningTarget;
 >     }
 > 
@@ -106,7 +124,7 @@
 >         challengeNumber = _challengeNumber;
 >     }
 > 
->     function setBalance(address _address, uint balance) public {
+>     function setBalance(address _address, uint256 balance) public {
 >         balances[_address] = balance;
 >     }
 > 
@@ -115,3 +133,5 @@
 >         from; tokens; token; data;  // suppress compiler warnings about unused variables
 >     }
 > 
+> 
+> }
