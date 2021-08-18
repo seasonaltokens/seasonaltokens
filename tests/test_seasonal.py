@@ -26,6 +26,11 @@ def token(accounts, chain):
     chain.sleep(1)
     return token
 
+def test_name(token):
+    assert token.name() == "Spring Token"
+
+def test_symbol(token):
+    assert token.symbol() == "SPRING"
 
 def test_total_supply(token):
     assert token.totalSupply() == token.tokensMinted()
@@ -42,7 +47,7 @@ def test_get_adjustment_interval(token):
     
 
 def test_initial_difficulty(token):
-    assert token.getMiningDifficulty() == 2 * (2**(255) // (token.MAXIMUM_TARGET()))
+    assert token.getMiningDifficulty() == (2**256-1) // (token.MAXIMUM_TARGET())
 
 def test_get_mining_reward(token):
     assert token.getMiningReward() == token.INITIAL_REWARD()
@@ -177,7 +182,7 @@ def test_increase_difficulty(token, chain):
     token.setMiningTarget(token._adjustDifficulty(initial_target, last_reward_time, 
                                                   1, chain.time()))
     assert token.getMiningTarget() < initial_target
-    assert token.getMiningTarget() == (initial_target // 100) * 99
+    assert token.getMiningTarget() == (initial_target * 99) // 100
 
 def test_increase_difficulty_to_limit(token, chain):
     start = token.contractCreationTime()
@@ -202,7 +207,7 @@ def test_decrease_difficulty(token, chain):
     last_reward_time = start
     token.setMiningTarget(token._adjustDifficulty(initial_target, last_reward_time, 1, chain.time()))
     assert token.getMiningTarget() > initial_target
-    assert token.getMiningTarget() == (initial_target // 99) * 100
+    assert token.getMiningTarget() == (initial_target  * 100) // 99
 
 def test_decrease_difficulty_multiple_rewards(token, chain):
     start = token.contractCreationTime()
@@ -212,7 +217,7 @@ def test_decrease_difficulty_multiple_rewards(token, chain):
     last_reward_time = start
     token.setMiningTarget(token._adjustDifficulty(initial_target, last_reward_time, 2, chain.time()))
     assert token.getMiningTarget() > initial_target
-    assert token.getMiningTarget() == (initial_target // 99) * 100
+    assert token.getMiningTarget() == (initial_target * 100) // 99
 
 def test_decrease_difficulty_to_limit(token, chain):
     start = token.contractCreationTime()
@@ -240,7 +245,7 @@ def test_legacy_minting(token):
     assert txn.events['Mint']['rewardAmount'] == token.INITIAL_REWARD()
 
 def test_revert_legacy_minting(token):
-    with reverts("Challenge digest does not match expected digest on token contract [ AbstractERC918.mint() ]"):
+    with reverts("Challenge digest does not match expected digest on token contract"):
         token.mint(nonce+1, digest)
 
 def test_revert_zero_reward(token):
@@ -292,6 +297,14 @@ def test_revert_insufficient_balance(token_with_balance, accounts):
 def test_approve(token_with_balance, accounts):
     token_with_balance.approve(accounts[0], 10)
     assert token_with_balance.allowance(accounts[-1], accounts[0]) == 10
+
+def test_revert_approve_zero_address(token_with_balance, accounts):
+    with reverts():
+        token_with_balance.approve(ZERO_ADDRESS, 10)
+
+def test_revert_approve_contract_address(token_with_balance, accounts):
+    with reverts():
+        token_with_balance.approve(token_with_balance.address, 10)
 
 def test_safe_approve(token_with_balance, accounts):
     token_with_balance.safeApprove(accounts[0].address, 0, 10)

@@ -37,11 +37,13 @@
 
         function transferOwnership(address _newOwner) public onlyOwner {
 
+            require(_newOwner != address(0), "Invalid address");
+
             newOwner = _newOwner;
 
         }
 
-        function acceptOwnership() public {
+        function acceptOwnership() external {
 
             require(msg.sender == newOwner);
 
