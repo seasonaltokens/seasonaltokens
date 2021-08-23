@@ -30,17 +30,17 @@ def token(accounts, chain):
     accounts.add(private_key)
     token = accounts[-1].deploy(TestSpringToken)
     token.setChallengeNumber(challenge)
-    #token.setMiningTarget(token.MAXIMUM_TARGET())
+    token.setMiningTarget(token.MAXIMUM_TARGET() // 2**10)
     chain.sleep(1)
     return token
 
 def _adjustDifficulty(_miningTarget, _lastRewardBlockTime, rewardsGivenNow, t):
     timeSinceLastReward = t - _lastRewardBlockTime
     if (timeSinceLastReward * 88 < rewardsGivenNow * reward_interval * 61):
-        _miningTarget = (_miningTarget // 100) * 99
+        _miningTarget = (_miningTarget * 99) // 100
 
     elif (timeSinceLastReward * 88 > rewardsGivenNow * reward_interval * 61):
-        _miningTarget = (_miningTarget // 99) * 100
+        _miningTarget = (_miningTarget * 100) // 99
         
     if (_miningTarget < MINIMUM_TARGET):
         _miningTarget = MINIMUM_TARGET

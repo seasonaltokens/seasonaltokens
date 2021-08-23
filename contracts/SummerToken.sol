@@ -77,7 +77,7 @@ contract SummerToken is ERC20Interface, ERC918, Owned {
 
     constructor() {
 
-        miningTarget = MAXIMUM_TARGET / 2**15;
+        miningTarget = MAXIMUM_TARGET / 2**19;
 
         contractCreationTime = block.timestamp;
         lastRewardBlockTime = block.timestamp;
