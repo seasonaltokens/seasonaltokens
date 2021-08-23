@@ -77,7 +77,7 @@ contract SpringToken is ERC20Interface, ERC918, Owned {
 
     constructor() {
 
-        miningTarget = MAXIMUM_TARGET / 2**10;
+        miningTarget = MAXIMUM_TARGET / 2**15;
 
         contractCreationTime = block.timestamp;
         lastRewardBlockTime = block.timestamp;
