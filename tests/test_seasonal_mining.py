@@ -98,3 +98,17 @@ def test_mean_interval_equals_ten_minutes_decreasing_hashpower(token, chain):
     assert abs((sum(intervals) / len(intervals)) / 600. - 1) < .015
 
 
+def daily_oscillating_hashpower(t):
+    return constant_hashpower(t) * (1 + 0.5 * sin(t * 365 * 6.28 / year))
+
+def hourly_oscillating_hashpower(t):
+    return constant_hashpower(t) * (1 + 0.5 * sin(t * 365 * 24 * 6.28 / year))
+
+
+def test_mean_interval_exceeds_ten_minutes_daily_oscillating_hashpower(token, chain):
+    intervals = get_mining_intervals(token, daily_oscillating_hashpower)
+    assert (sum(intervals) / len(intervals)) / 600. - 1 > 0
+
+def test_mean_interval_exceeds_ten_minutes_hourly_oscillating_hashpower(token, chain):
+    intervals = get_mining_intervals(token, hourly_oscillating_hashpower)
+    assert (sum(intervals) / len(intervals)) / 600. - 1 > 0
