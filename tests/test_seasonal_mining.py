@@ -45,7 +45,7 @@ def _adjustDifficulty(_miningTarget, _lastRewardBlockTime, rewardsGivenNow, t):
 def constant_hashpower(t):
     return 1e8
 
-def oscillating_hashpower(t):
+def monthly_oscillating_hashpower(t):
     return constant_hashpower(t) * (1 + 0.5 * sin(t * 12 * 6.28 / year))
 
 def increasing_hashpower(t):
@@ -73,8 +73,8 @@ def test_mean_interval_equals_ten_minutes_constant_hashpower(token, chain):
     assert abs((sum(intervals) / len(intervals)) / 600. - 1) < .015
 
 
-def test_mean_interval_equals_ten_minutes_oscillating_hashpower(token, chain):
-    intervals = get_mining_intervals(token, oscillating_hashpower)
+def test_mean_interval_equals_ten_minutes_monthly_oscillating_hashpower(token, chain):
+    intervals = get_mining_intervals(token, monthly_oscillating_hashpower)
     assert abs((sum(intervals) / len(intervals)) / 600. - 1) < .015
 
 
