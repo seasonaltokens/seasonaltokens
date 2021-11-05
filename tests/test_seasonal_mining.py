@@ -10,18 +10,10 @@ digest = bytes.fromhex("000001569c7ec7933fa667eca50c0e6b5c7ad4f7465bbef84c369471
 
 
 year = 365 * 24 * 60 * 60
-first_era = year * 3 // 4
-era = 3 * year
 
 reward_interval = 600
 MAXIMUM_TARGET = 2**234
 MINIMUM_TARGET = 2**16
-
-REWARD_INTERVAL = 600
- 
-initial_reward = 168 * 10**18 
-rewards_in_first_era = first_era // reward_interval
-rewards_per_era = era // reward_interval
 
 time_limit = 2 * year
 
@@ -67,14 +59,12 @@ def interval(rate):
 
 def get_mining_intervals(token, hashpower_function):
     mining_target =  token.getMiningTarget()
-    t, rewards, time_counted, intervals  = 0, 0, 0, []
+    t, intervals  = 0, []
     while t < time_limit:
         rate = hashpower_function(t) * mining_target / 2**256
         intervals.append(interval(rate))
         mining_target = _adjustDifficulty(mining_target, t , 1, t+intervals[-1])
         t += intervals[-1]
-        time_counted += intervals[-1]
-        rewards += 1
     return intervals
 
 
@@ -98,12 +88,19 @@ def test_mean_interval_equals_ten_minutes_decreasing_hashpower(token, chain):
     assert abs((sum(intervals) / len(intervals)) / 600. - 1) < .015
 
 
+def weekly_oscillating_hashpower(t):
+    return constant_hashpower(t) * (1 + 0.5 * sin(t * 52 * 6.28 / year))
+
 def daily_oscillating_hashpower(t):
     return constant_hashpower(t) * (1 + 0.5 * sin(t * 365 * 6.28 / year))
 
 def hourly_oscillating_hashpower(t):
     return constant_hashpower(t) * (1 + 0.5 * sin(t * 365 * 24 * 6.28 / year))
 
+
+def test_mean_interval_exceeds_ten_minutes_weekly_oscillating_hashpower(token, chain):
+    intervals = get_mining_intervals(token, weekly_oscillating_hashpower)
+    assert (sum(intervals) / len(intervals)) / 600. - 1 > 0
 
 def test_mean_interval_exceeds_ten_minutes_daily_oscillating_hashpower(token, chain):
     intervals = get_mining_intervals(token, daily_oscillating_hashpower)
